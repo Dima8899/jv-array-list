@@ -1,48 +1,1 @@
-package core.basesyntax;
-
-public class ArrayList<T> implements List<T> {
-    @Override
-    public void add(T value) {
-
-    }
-
-    @Override
-    public void add(T value, int index) {
-
-    }
-
-    @Override
-    public void addAll(List<T> list) {
-
-    }
-
-    @Override
-    public T get(int index) {
-        return null;
-    }
-
-    @Override
-    public void set(T value, int index) {
-
-    }
-
-    @Override
-    public T remove(int index) {
-        return null;
-    }
-
-    @Override
-    public T remove(T element) {
-        return null;
-    }
-
-    @Override
-    public int size() {
-        return 0;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
-}
+package core.basesyntax;import java.util.NoSuchElementException;public class ArrayList<T> implements List<T> {    private static final int DEFAULT_CAPACITY = 10;    private Object[] elements;    private int size;    public ArrayList(int capacity) {        if (capacity < 0) {            throw new IllegalArgumentException("Capacity can't be negative");        }        this.elements = new Object[capacity];        this.size = 0;    }    public ArrayList() {        this.elements = new Object[DEFAULT_CAPACITY];        this.size = 0;    }    private void grow() {        int newCapacity = elements.length + elements.length / 2;        Object[] newElements = new Object[newCapacity];        for (int i = 0; i < size; i++) {            newElements[i] = elements[i];        }        elements = newElements;    }    @Override    public void add(T value) {        if (size == elements.length) {            grow();        }        elements[size] = value;        size++;    }    @Override    public void add(T value, int index) {        if (index < 0 || size < index) {            throw new ArrayListIndexOutOfBoundsException("index out of bounds");        }        if (size == elements.length) {            grow();        }        for (int i = size; i > index; i--) {            elements[i] = elements[i - 1];        }        elements[index] = value;        size++;    }    @Override    public void addAll(List<T> list) {        if (list == null) {            throw new NullPointerException("the list is empty");        }        for (int i = 0; i < list.size(); i++) {            add(list.get(i));        }    }    @Override    public T get(int index) {        if (index < 0 || index >= size) {            throw new ArrayListIndexOutOfBoundsException("Index is out of bounds");        }        T element = (T) elements[index];        return element;    }    @Override    public void set(T value, int index) {        if (index < 0 || index >= size) {            throw new ArrayListIndexOutOfBoundsException("Index is out of bound");        }        elements[index] = value;    }    @Override    public T remove(int index) {        if (index < 0 || index >= size) {            throw new ArrayListIndexOutOfBoundsException("Index out of bound");        }        T removed = (T) elements[index];        for (int i = index; i < size - 1; i++) {            elements[i] = elements[i + 1];        }        size--;        return removed;    }    @Override    public T remove(T element) {        for (int i = 0; i < size; i++) {            if (elements[i] == null ? element == null : elements[i].equals(element)) {                return remove(i);            }        }        throw new NoSuchElementException("There is no such element");    }    @Override    public int size() {        return size;    }    @Override    public boolean isEmpty() {        return size == 0;    }}
